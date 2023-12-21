@@ -71,7 +71,7 @@ if submit and question:
                + question},
           ]
       )
-      question = trans_question.choices[0].text.strip()
+      question = trans_question.choices[0].message.content
       question = question.replace("\n", " ")
       question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
     

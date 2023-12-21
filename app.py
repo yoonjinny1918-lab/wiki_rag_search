@@ -58,4 +58,4 @@ if submit and question:
       choices = summary.choices
     
       for choice in choices:
-        st.write(choice)
+        st.write(choice.message.content)

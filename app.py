@@ -77,7 +77,17 @@ if submit and question:
       )
 
       top_hit_summary = response['hits']['hits'][0]['_source']['text'] # Store content of top hit for final step
+
+      messages=[
+          {"role": "system", "content": "You are a helpful assistant."},
+          {"role": "user", "content": "Translate the following text into english. and Answer the following question in Korean.:"
+           + question
+           + "by using the following text:"
+           + top_hit_summary},
+      ]
       
+      print(messages[0])
+
       summary = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -89,7 +99,6 @@ if submit and question:
           ]
       )
 
-      print(messages[0])
     
       choices = summary.choices
       st.divider()

@@ -63,14 +63,15 @@ with st.form("form"):
 if submit and question:
   with st.spinner("Waiting for Kevin AI..."):
 
-      question = client.chat.completions.create(
-                  engine="text-davinci-002", 
-                  prompt=f"Translate the following text into english:" {question}\n", 
-                  max_tokens=60, 
-                  n=1, 
-                  stop=None, 
-                  temperature=0.7,
-                    )
+      trans_question = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+              {"role": "system", "content": "You are a helpful assistant."},
+              {"role": "user", "content": "Translate the following text into english : "
+               + question},
+          ]
+      )
+      question = trans_question.choices[0].text.strip()
       question = question.replace("\n", " ")
       question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
     

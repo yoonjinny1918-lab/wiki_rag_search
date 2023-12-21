@@ -27,12 +27,19 @@ st.subheader("Semantic search and Retrieval augmented generation using Elasticse
 st.caption('''
 데이터 출처
 - https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip
+- 설명 : https://weaviate.io/developers/weaviate/tutorials/wikipedia
+- 데이터건수 : 25,000건 (데이터의 양을 늘리면, 다양한 질문에 대한 답변 가능)
 
 시스템 구현 방식
-- OpenAI Wikipedia 벡터 데이터 세트를 Elasticsearch로 색인하기
-- OpenAI 임베딩 엔드포인트로 질문 임베딩하기
-- 인코딩된 질문을 사용해 Elasticsearch 색인에서 시맨틱 검색(KNN)을 수행합니다.
-- 검색 증강 생성(RAG)을 위해 상위 검색 결과를 OpenAI 채팅 완성 API 엔드포인트로 보내기
+- OpenAI Wikipedia 벡터 데이터 세트를 Elasticsearch(검색엔진)로 색인
+- OpenAI Embedding을 통하여 사용자 질문 임베딩
+- 임베딩된 질문을 사용해 Elasticsearch에서 시맨틱 검색(KNN : 벡터 유사도)을 수행
+- 검색 증강 생성(RAG)을 위해 상위 검색 결과를 이용하여 OpenAI 채팅 완성 API를 사용하여 요약하여 답변
+
+장점
+- LLM(Large Language Model) AI의 답변이 아닌 내가 원하는 문서를 통해서 답변 가능하여 할루시네이션(Hallucination)을 최소화
+- 전통적인 검색방식(키워드 매칭)을 탈피하여 의미가 유사한 문서를 찾고 이를 통한 답변 가능
+- 다국어(multi-lingual AI) 검색 가능(단, 학습문서가 영어라서 영어로 질의해야 정확도가 높음)
 ''')
 
 with st.form("form"):

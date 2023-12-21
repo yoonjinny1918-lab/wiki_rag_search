@@ -80,7 +80,7 @@ if submit and question:
 
       messages=[
           {"role": "system", "content": "You are a helpful assistant."},
-          {"role": "user", "content": "Translate the following text into english. and Answer the following question in Korean.:"
+          {"role": "user", "content": "Translate the following text into english and answer the following question in Korean.:"
            + question
            + "by using the following text:"
            + top_hit_summary},

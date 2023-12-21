@@ -18,7 +18,7 @@ es = Elasticsearch(
 )
 
 # Test connection to Elasticsearch
-print(client.info())
+print(es.info())
 
 
 st.title("Kevin의 위키피디아 AI 검색기(RAG)")

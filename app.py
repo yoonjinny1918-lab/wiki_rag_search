@@ -99,6 +99,7 @@ if submit and question:
                + top_hit_summary},
           ]
       )
+      print(messages)
   
       choices = summary.choices
       st.divider()

@@ -21,37 +21,37 @@ es = Elasticsearch(
 print(es.info())
 
 
-st.title("Kevin의 위키피디아 AI 검색기")
+st.title("Kevin의 위키피디아로 답변하는 AI 답변 로봇")
 st.subheader("Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI")
 
 st.caption('''
+졸은 질문 예 : 
+- How big is the Atlantic ocean?
+- 대한민국의 수도는?
+- 이순신의 출생년도는?
+- 북한과 남한의 대표적인 장단점을 3가지만 정리해줘.
+
+장점
+- 전통적인 검색방식(키워드 매칭)을 탈피하여 의미가 유사한 문서를 찾고 이를 통한 답변 가능
+- 일반 검색에 비하여 2~3 단어의 이상의 문장형 검색 질의에 답변 잘함
+- 다국어(multi-lingual AI) 검색 가능(단, 학습문서가 영어라서 영어로 질의해야 답변 잘해요.)
+- LLM(Large Language Model) AI의 답변이 아닌 내가 원하는 문서를 통해서 답변 가능하여 할루시네이션(Hallucination)을 최소화
+- Private한 사내 문서나 특정 도메인에 특화된 답변이 가능합니다.(사내 문서가 외부로 노출되지 않음)
+
+단점
+- 데이터가 충분하지 않아 다양한 질문에 정확한 답을 못할 수 있음.
+- 유사도 검색의 특성상 적절하지 않은 검색결과가 있다면 잘못된 답변을 할 수 있음
+
 데이터 출처
 - https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip
-- 설명 : https://weaviate.io/developers/weaviate/tutorials/wikipedia
-- 데이터건수 : 25,000건 (데이터의 양을 늘리면, 다양한 질문에 대한 답변 가능)
+- 데이터 설명 : https://weaviate.io/developers/weaviate/tutorials/wikipedia
+- 데이터 건수 : 25,000건 (데이터의 양을 늘리면, 다양한 질문에 대한 답변 가능)
 
 시스템 구현 방식
 - OpenAI Wikipedia 벡터 데이터 세트를 Elasticsearch(검색엔진)로 색인
 - OpenAI Embedding을 통하여 사용자 질문 임베딩
 - 임베딩된 질문을 사용해 Elasticsearch에서 시맨틱 검색(KNN : 벡터 유사도)을 수행
 - 검색 증강 생성(RAG)을 위해 상위 검색 결과를 이용하여 OpenAI 채팅 완성 API를 사용하여 요약하여 답변
-
-장점
-- LLM(Large Language Model) AI의 답변이 아닌 내가 원하는 문서를 통해서 답변 가능하여 할루시네이션(Hallucination)을 최소화
-- Private한 사내 문서나 특정 도메인에 특화된 답변이 가능합니다.(사내 문서가 외부로 노출되지 않음)
-- 전통적인 검색방식(키워드 매칭)을 탈피하여 의미가 유사한 문서를 찾고 이를 통한 답변 가능
-- 일반 검색에 비하여 2~3 단어의 이상의 문장형 검색 질의에 답변 잘함
-- 다국어(multi-lingual AI) 검색 가능(단, 학습문서가 영어라서 영어로 질의해야 정확도가 높음)
-
-단점
-- 데이터가 충분하지 않아 다양한 질문에 정확한 답을 못할 수 있습니다.
-- 유사도 검색의 특성상 적절하지 않은 검색결과가 있다면 잘못된 답변을 할 수 있음
-
-졸은 질문 예 : 
-- How big is the Atlantic ocean?
-- 대한민국의 수도는?
-- 이순신의 출생년도는?
-- 북한과 남한의 대표적인 장단점을 3가지만 정리해줘.
 ''')
 
 with st.form("form"):

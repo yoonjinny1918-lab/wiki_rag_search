@@ -29,7 +29,7 @@ with st.form("form"):
 
 with st.spinner("Waiting for Kevin AI..."):
     question = question.replace("\n", " ")
-    question_embedding = client.embeddings.create(input = [text], model="text-embedding-ada-002").data[0].embedding
+    question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
   
     response = es.search(
       index = "wikipedia_vector_index",

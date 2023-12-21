@@ -63,6 +63,7 @@ with st.form("form"):
 if submit and question:
   with st.spinner("Waiting for Kevin AI..."):
 
+      '''
       trans_question = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -72,6 +73,7 @@ if submit and question:
           ]
       )
       question = trans_question.choices[0].message.content
+      '''
       question = question.replace("\n", " ")
       question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
     
@@ -91,7 +93,7 @@ if submit and question:
         model="gpt-3.5-turbo",
         messages=[
               {"role": "system", "content": "You are a helpful assistant."},
-              {"role": "user", "content": "Answer the following question in Korean.:"
+              {"role": "user", "content": "Translate the following text into english. and Answer the following question in Korean.:"
                + question
                + "by using the following text:"
                + top_hit_summary},

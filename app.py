@@ -88,7 +88,9 @@ if submit and question:
                + top_hit_summary},
           ]
       )
-  
+
+      print(messages[0])
+    
       choices = summary.choices
       st.divider()
     
@@ -97,7 +99,7 @@ if submit and question:
         st.markdown(choice.message.content)
 
       st.divider()
-      st.subheader("참고 문서 List")
+      st.subheader("검색 문서 List")
     
       for hit in response['hits']['hits']:
         id = hit['_id']

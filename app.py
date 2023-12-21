@@ -21,10 +21,10 @@ es = Elasticsearch(
 print(es.info())
 
 
-st.title("Kevin의 위키피디아 AI 검색기(RAG)")
-st.caption('''
-Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI   \
+st.title("Kevin의 위키피디아 AI 검색기")
+st.subheader("Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI")
 
+st.caption('''
 데이터 출처
 - https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip
 

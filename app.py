@@ -74,14 +74,6 @@ if submit and question:
           }
       )
 
-      for hit in response['hits']['hits']:
-        id = hit['_id']
-        score = hit['_score']
-        title = hit['_source']['title']
-        url = hit['_source']['url']
-        pretty_output = (f"\nID: {id}\nTitle: {title}\nUrl: {url}\nScore: {score}")
-        st.markdown(pretty_output)
-      
       top_hit_summary = response['hits']['hits'][0]['_source']['text'] # Store content of top hit for final step
       
       summary = client.chat.completions.create(
@@ -100,3 +92,13 @@ if submit and question:
       for choice in choices:
         print(choice.message.content)
         st.markdown(choice.message.content)
+
+      st.subheader("참고 문서 List")
+    
+      for hit in response['hits']['hits']:
+        id = hit['_id']
+        score = hit['_score']
+        title = hit['_source']['title']
+        url = hit['_source']['url']
+        pretty_output = (f"\nID: {id}\nTitle: {title}\nUrl: {url}\nScore: {score}")
+        st.markdown(pretty_output)

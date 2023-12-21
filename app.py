@@ -27,34 +27,35 @@ with st.form("form"):
     question = st.text_input("Prompt")
     submit = st.form_submit_button("Submit")
 
-with st.spinner("Waiting for Kevin AI..."):
-    question = question.replace("\n", " ")
-    question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
-  
-    response = es.search(
-      index = "wikipedia_vector_index",
-      knn={
-          "field": "content_vector",
-          "query_vector":  question_embedding,
-          "k": 10,
-          "num_candidates": 100
-        }
-    )
+if submit and question:
+  with st.spinner("Waiting for Kevin AI..."):
+      question = question.replace("\n", " ")
+      question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
     
-    top_hit_summary = response['hits']['hits'][0]['_source']['text'] # Store content of top hit for final step
-    
-    summary = client.chat.completions.create(
-      model="gpt-3.5-turbo",
-      messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "Answer the following question in Korean.:"
-             + question
-             + "by using the following text:"
-             + top_hit_summary},
-        ]
-    )
-
-    choices = summary.choices
+      response = es.search(
+        index = "wikipedia_vector_index",
+        knn={
+            "field": "content_vector",
+            "query_vector":  question_embedding,
+            "k": 10,
+            "num_candidates": 100
+          }
+      )
+      
+      top_hit_summary = response['hits']['hits'][0]['_source']['text'] # Store content of top hit for final step
+      
+      summary = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+              {"role": "system", "content": "You are a helpful assistant."},
+              {"role": "user", "content": "Answer the following question in Korean.:"
+               + question
+               + "by using the following text:"
+               + top_hit_summary},
+          ]
+      )
   
-    for choice in choices:
-      st.write(choice)
+      choices = summary.choices
+    
+      for choice in choices:
+        st.write(choice)

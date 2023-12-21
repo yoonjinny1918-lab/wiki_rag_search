@@ -62,6 +62,15 @@ with st.form("form"):
 
 if submit and question:
   with st.spinner("Waiting for Kevin AI..."):
+
+      question = client.chat.completions.create(
+                  engine="text-davinci-002", 
+                  prompt=f"Translate the following text into english: {text}\n", 
+                  max_tokens=60, 
+                  n=1, 
+                  stop=None, 
+                  temperature=0.7,
+                    )
       question = question.replace("\n", " ")
       question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
     

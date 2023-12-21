@@ -46,6 +46,7 @@ st.caption('''
 - How big is the Atlantic ocean?
 - 대한민국의 수도는?
 - 이순신의 출생년도는?
+- 북한과 남한의 대표적인 장단점을 3가지만 표형태로 정리해줘.
 ''')
 
 with st.form("form"):
@@ -83,4 +84,4 @@ if submit and question:
       choices = summary.choices
     
       for choice in choices:
-        st.write(choice.message.content)
+        st.markdown(choice.message.content)

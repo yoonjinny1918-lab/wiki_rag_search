@@ -65,7 +65,7 @@ if submit and question:
 
       question = client.chat.completions.create(
                   engine="text-davinci-002", 
-                  prompt=f"Translate the following text into english: {text}\n", 
+                  prompt=f"Translate the following text into english: {question}\n", 
                   max_tokens=60, 
                   n=1, 
                   stop=None, 

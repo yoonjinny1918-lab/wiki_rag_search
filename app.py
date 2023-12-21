@@ -21,8 +21,9 @@ es = Elasticsearch(
 print(es.info())
 
 
-st.title("영문 위키피디아 기반, 한글로 답변하는 AI")
-st.subheader("Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI")
+st.title("영문 위키피디아 이용한")
+st.title("한글로 답변하는 AI")
+st.subheader("부제 : Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI")
 
 st.caption('''
 졸은 질문 예 : 

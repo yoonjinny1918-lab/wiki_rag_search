@@ -39,7 +39,13 @@ st.caption('''
 장점
 - LLM(Large Language Model) AI의 답변이 아닌 내가 원하는 문서를 통해서 답변 가능하여 할루시네이션(Hallucination)을 최소화
 - 전통적인 검색방식(키워드 매칭)을 탈피하여 의미가 유사한 문서를 찾고 이를 통한 답변 가능
+- 일반 검색에 비하여 2~3 단어의 이상의 문장형 검색 질의에 답변 잘함
 - 다국어(multi-lingual AI) 검색 가능(단, 학습문서가 영어라서 영어로 질의해야 정확도가 높음)
+
+졸은 질문 예 : 
+How big is the Atlantic ocean?
+대한민국의 수도는?
+이순신의 출생년도는?
 ''')
 
 with st.form("form"):

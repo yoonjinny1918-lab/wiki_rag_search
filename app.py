@@ -22,17 +22,18 @@ print(es.info())
 
 
 st.title("Kevin의 위키피디아 AI 검색기(RAG)")
-st.caption("Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI
+st.caption('''
+Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI   \
 
-            데이터 출처
-            - https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip
-            
-            시스템 구현 방식
-            - OpenAI Wikipedia 벡터 데이터 세트를 Elasticsearch로 색인하기
-            - OpenAI 임베딩 엔드포인트로 질문 임베딩하기
-            - 인코딩된 질문을 사용해 Elasticsearch 색인에서 시맨틱 검색(KNN)을 수행합니다.
-            - 검색 증강 생성(RAG)을 위해 상위 검색 결과를 OpenAI 채팅 완성 API 엔드포인트로 보내기
-           ")
+데이터 출처
+- https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip
+
+시스템 구현 방식
+- OpenAI Wikipedia 벡터 데이터 세트를 Elasticsearch로 색인하기
+- OpenAI 임베딩 엔드포인트로 질문 임베딩하기
+- 인코딩된 질문을 사용해 Elasticsearch 색인에서 시맨틱 검색(KNN)을 수행합니다.
+- 검색 증강 생성(RAG)을 위해 상위 검색 결과를 OpenAI 채팅 완성 API 엔드포인트로 보내기
+''')
 
 with st.form("form"):
     question = st.text_input("Prompt")

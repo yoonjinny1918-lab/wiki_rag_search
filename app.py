@@ -82,7 +82,7 @@ if submit and question:
         model="gpt-3.5-turbo",
         messages=[
               {"role": "system", "content": "You are a helpful assistant."},
-              {"role": "user", "content": "Translate the following text into english and answer in Korean.:"
+              {"role": "user", "content": "Translate the following text into english and answer in Korean:"
                + question
                + "by using the following text:"
                + top_hit_summary},
@@ -98,7 +98,7 @@ if submit and question:
         st.markdown(choice.message.content)
 
       st.divider()
-      st.subheader("검색 문서 List")
+      st.subheader("검색해본 위키 문서 List")
     
       for hit in response['hits']['hits']:
         id = hit['_id']

@@ -21,7 +21,7 @@ es = Elasticsearch(
 print(es.info())
 
 
-st.title("영문 위키피디아 이용한")
+st.header("영문 위키피디아 이용한")
 st.title("한글로 답변하는 AI")
 st.subheader("부제 : Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI")
 
@@ -89,11 +89,13 @@ if submit and question:
       )
   
       choices = summary.choices
+      st.divider()
     
       for choice in choices:
         print(choice.message.content)
         st.markdown(choice.message.content)
 
+      st.divider()
       st.subheader("참고 문서 List")
     
       for hit in response['hits']['hits']:

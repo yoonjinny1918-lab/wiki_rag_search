@@ -73,6 +73,14 @@ if submit and question:
             "num_candidates": 100
           }
       )
+
+      for hit in response['hits']['hits']:
+        id = hit['_id']
+        score = hit['_score']
+        title = hit['_source']['title']
+        url = hit['_source']['url']
+        pretty_output = (f"\nID: {id}\nTitle: {title}\nUrl: {url}\nScore: {score}")
+        st.markdown(pretty_output)
       
       top_hit_summary = response['hits']['hits'][0]['_source']['text'] # Store content of top hit for final step
       

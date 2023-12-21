@@ -1,5 +1,5 @@
 import os
-from pandas as pd
+import pandas as pd
 import streamlit as st
 from openai import OpenAI
 from elasticsearch import Elasticsearch

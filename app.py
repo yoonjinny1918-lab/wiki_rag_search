@@ -43,9 +43,9 @@ st.caption('''
 - 다국어(multi-lingual AI) 검색 가능(단, 학습문서가 영어라서 영어로 질의해야 정확도가 높음)
 
 졸은 질문 예 : 
-How big is the Atlantic ocean?
-대한민국의 수도는?
-이순신의 출생년도는?
+- How big is the Atlantic ocean?
+- 대한민국의 수도는?
+- 이순신의 출생년도는?
 ''')
 
 with st.form("form"):

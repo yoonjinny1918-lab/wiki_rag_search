@@ -79,8 +79,8 @@ if submit and question:
       top_hit_summary = response['hits']['hits'][0]['_source']['text'] # Store content of top hit for final step
 
       summary = client.chat.completions.create(
-        #model="gpt-3.5-turbo",
-        model="gpt-4-1106-preview",
+        model="gpt-3.5-turbo",
+        #model="gpt-4-1106-preview",
         messages=[
               {"role": "system", "content": "You are a helpful assistant. Translate the following question into english and answer in Korean"},
               #{"role": "user", "content": "Translate the following question into english and answer in Korean:"

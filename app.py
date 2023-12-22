@@ -82,7 +82,8 @@ if submit and question:
         model="gpt-3.5-turbo",
         messages=[
               {"role": "system", "content": "You are a helpful assistant."},
-              {"role": "user", "content": "Translate the following text into english and answer in Korean:"
+              {"role": "user", "content": "Translate the following question into english and answer in Korean:"
+              #{"role": "user", "content": "Answer the following question:"
                + question
                + "by using the following text:"
                + top_hit_summary},

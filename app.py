@@ -81,7 +81,7 @@ if submit and question:
       summary = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-              {"role": "system", "content": "You are a helpful assistant."},
+              {"role": "system", "content": "You are a helpful assistant. Translate the following question into english and answer in Korean"},
               #{"role": "user", "content": "Translate the following question into english and answer in Korean:"
               {"role": "user", "content": "Answer the following question in korean:"
                + question

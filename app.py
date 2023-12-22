@@ -26,7 +26,7 @@ st.title("한글로 답변하는 AI")
 st.subheader("부제 : Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI")
 
 st.caption('''
-졸은 질문 예 : 
+명확한 정답이 있는 답변을 잘합니다. 졸은 질문 예 : 
 - How big is the Atlantic ocean?
 - 대한민국의 수도는?
 - 이순신의 출생년도는?

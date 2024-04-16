@@ -81,6 +81,7 @@ if submit and question:
                + question
                + "by using the following text:"
                + top_hit_summary},
+              {"role": "user", "content": "If it is difficult to give an exact answer to the question with the following text, please answer in Korean: '제가 기지고 있는 정보로는 답변이 어렵습니다.'"}
           ]
       )
 

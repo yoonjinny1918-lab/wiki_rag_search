@@ -50,11 +50,10 @@ if submit and question:
 
       question = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        #model="gpt-4-1106-preview",
-        messages=[
-                {"role": "system", "content": "If a question comes in Korean, Translate the following Korean text to Enaglish: '{question}'"}
-        ]
+        prompt="If a question comes in Korean, Translate the following Korean text to Enaglish: '{question}'"
       )
+
+      print(question)
 
       question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
     

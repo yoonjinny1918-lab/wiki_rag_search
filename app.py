@@ -27,7 +27,7 @@ st.subheader("부제 : Semantic search and Retrieval augmented generation using 
 
 st.caption('''
 영문 Wiki에서 답변 가능한 질문에 대해서 답변을 잘합니다. 졸은 질문 예 : 
-- How big is the Atlantic ocean?
+- 대서양은 몇 번째로 큰 바다인가?
 - 대한민국의 수도는?
 - 이순신의 출생년도는?
 - 도요타에서 가장 많이 팔리는 차는?

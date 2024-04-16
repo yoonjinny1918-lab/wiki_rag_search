@@ -55,13 +55,8 @@ if submit and question:
                + question},
           ]
       )
-      choices = question.choices
-      for choice in choices:
-        print(choice.message.content)
-        st.markdown(choice.message.content)
-
-      print(print(choice.message.content))
-
+      question = question.choices[0].message.content
+      print(question)
       question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
     
       response = es.search(

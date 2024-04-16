@@ -64,7 +64,7 @@ if submit and question:
         knn={
             "field": "content_vector",
             "query_vector":  question_embedding,
-            "k": 3,
+            "k": 10,
             "num_candidates": 100
           }
       )

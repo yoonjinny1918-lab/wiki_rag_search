@@ -45,9 +45,9 @@ with st.form("form"):
 
 if submit and question:
   with st.spinner("Waiting for Kevin AI..."):
-
+      print("질문 : " + question)
       question = question.replace("\n", " ")
-
+    
       question = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -56,7 +56,7 @@ if submit and question:
           ]
       )
       question = question.choices[0].message.content
-      print(question)
+      print("번역 : " + question)
       question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
     
       response = es.search(

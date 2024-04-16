@@ -50,7 +50,7 @@ if submit and question:
 
       question = client.Completions.create(
         model="gpt-3.5-turbo",
-        prompts="If a question comes in Korean, Translate the following Korean text to Enaglish: '{question}'"
+        prompt="If a question comes in Korean, Translate the following Korean text to Enaglish: '{question}'"
       )
 
       print(question)

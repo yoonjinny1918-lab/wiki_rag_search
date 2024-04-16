@@ -48,9 +48,9 @@ if submit and question:
 
       question = question.replace("\n", " ")
 
-      question = client.chat.completions.create(
+      question = client.Completions.create(
         model="gpt-3.5-turbo",
-        massages="If a question comes in Korean, Translate the following Korean text to Enaglish: '{question}'"
+        prompts="If a question comes in Korean, Translate the following Korean text to Enaglish: '{question}'"
       )
 
       print(question)

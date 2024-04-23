@@ -85,7 +85,7 @@ if submit and question:
               # + "by using the following text:"
               # + top_hit_summary},
               {"role": "user", "content": "Use three sentences maximum and keep the answer concise. Question: "
-               +question
+               + question +
                " Context: " + top_hit_summary },
           ]
       )

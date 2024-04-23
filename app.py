@@ -84,7 +84,7 @@ if submit and question:
               # + question
               # + "by using the following text:"
               # + top_hit_summary},
-              {"role": "user", "content": "Use three sentences maximum and keep the answer concise. Question: "
+              {"role": "user", "content": "Use three sentences maximum and keep the answer concise and Answer the following question in korean: Question: "
                + question +
                " Context: " + top_hit_summary },
           ]

@@ -76,12 +76,18 @@ if submit and question:
         #model="gpt-4-1106-preview",
         messages=[
               #{"role": "system", "content": "You are a helpful assistant. If it is difficult to give an exact answer to the question with the following text, please answer in Korean: '제가 기지고 있는 정보로는 답변이 어렵습니다.'"},
-              {"role": "system", "content": "You are a helpful assistant."},
+              {"role": "system", "content": "You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know."},
+
+              #{"role": "system", "content": "You are a helpful assistant."},
               #{"role": "user", "content": "Translate the following question into english and answer in Korean:"
-              {"role": "user", "content": "Answer the following question in korean:"
-               + question
-               + "by using the following text:"
-               + top_hit_summary},
+              #{"role": "user", "content": "Answer the following question in korean:"
+              # + question
+              # + "by using the following text:"
+              # + top_hit_summary},
+              {"role": "user", "content": "Use three sentences maximum and keep the answer concise.
+              Question: {question} 
+              Context: {top_hit_summary} 
+              Answer:"},
           ]
       )
 

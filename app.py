@@ -21,7 +21,7 @@ es = Elasticsearch(
 print(es.info())
 
 
-st.subheader("영문 위키피디아 이용한")
+st.subheader("박윤진의 영문 위키피디아 이용한")
 st.title("한글로 답변하는 AI")
 st.subheader("부제 : Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI")
 

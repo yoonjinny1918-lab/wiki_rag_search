@@ -4,107 +4,161 @@ import streamlit as st
 from openai import OpenAI
 from elasticsearch import Elasticsearch
 
+# -----------------------------
+# 기본 설정
+# -----------------------------
+st.set_page_config(
+    page_title="정케빈의 AI 위키 검색기",
+    page_icon="📘",
+    layout="wide"
+)
+
+# Streamlit 스타일 커스터마이징
+st.markdown("""
+    <style>
+    body {
+        background-color: #f8fafc;
+    }
+    .main-title {
+        text-align: center;
+        color: #1e3a8a;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-top: -20px;
+    }
+    .sub-title {
+        text-align: center;
+        color: #475569;
+        font-size: 1.1rem;
+    }
+    .result-card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 15px;
+    }
+    .wiki-card {
+        background-color: #f1f5f9;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    .footer {
+        color: #94a3b8;
+        font-size: 0.8rem;
+        text-align: center;
+        margin-top: 30px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# -----------------------------
+# OpenAI & Elasticsearch 연결
+# -----------------------------
 client = OpenAI(api_key=st.secrets["api_key"])
-
-# https://www.elastic.co/search-labs/tutorials/install-elasticsearch/elastic-cloud#finding-your-cloud-id
 ELASTIC_CLOUD_ID = st.secrets["elastic_cloud_key"]
-
-# https://www.elastic.co/search-labs/tutorials/install-elasticsearch/elastic-cloud#creating-an-api-key
 ELASTIC_API_KEY = st.secrets["elastic_api_key"]
 
 es = Elasticsearch(
-  cloud_id = ELASTIC_CLOUD_ID,
-  api_key=ELASTIC_API_KEY
+    cloud_id=ELASTIC_CLOUD_ID,
+    api_key=ELASTIC_API_KEY
 )
 
-# Test connection to Elasticsearch
-print(es.info())
+# 연결 테스트
+try:
+    es.info()
+except Exception as e:
+    st.error(f"❌ Elasticsearch 연결 실패: {e}")
+    st.stop()
 
+# -----------------------------
+# 헤더 및 소개 섹션
+# -----------------------------
+st.markdown("<h1 class='main-title'>📘 한글로 답변하는 위키 기반 AI</h1>", unsafe_allow_html=True)
+st.markdown("<p class='sub-title'>Semantic Search + RAG 기반 | Powered by Elasticsearch & OpenAI</p>", unsafe_allow_html=True)
+st.divider()
 
-st.subheader("박윤진의 영문 위키피디아 이용한")
-st.title("한글로 답변하는 AI")
-st.subheader("부제 : Semantic search and Retrieval augmented generation using Elasticsearch and OpenAI")
+with st.expander("📄 서비스 설명", expanded=False):
+    st.caption("""
+    이 서비스는 **영문 위키피디아 데이터셋(25,000건)**을 기반으로
+    한국어 질문에 대해 **의미 검색(Semantic Search)** 및 **RAG(Retrieval-Augmented Generation)** 기술을 활용해
+    한글로 답변을 제공합니다.
 
-st.caption('''
-영문 Wiki에서 답변 가능한 질문에 대해서 답변을 잘합니다. 졸은 질문 예 : 
-- 대서양은 몇 번째로 큰 바다인가?
-- 대한민국의 수도는?
-- 이순신의 출생년도는?
-- 도요타에서 가장 많이 팔리는 차는?
+    **예시 질문**
+    - 대서양은 몇 번째로 큰 바다인가?
+    - 대한민국의 수도는?
+    - 도요타에서 가장 많이 팔리는 차는?
 
-데이터 출처
-- https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip
-- 데이터 설명 : https://weaviate.io/developers/weaviate/tutorials/wikipedia
-- 데이터 건수 : 25,000건 (데이터의 양을 늘리면, 다양한 질문에 대한 답변 가능)
+    **데이터 출처**
+    - [Wikipedia Embeddings Dataset](https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip)
+    - [데이터 설명](https://weaviate.io/developers/weaviate/tutorials/wikipedia)
+    """)
 
-''')
+# -----------------------------
+# 질문 입력 섹션
+# -----------------------------
+st.markdown("### 💬 질문을 입력하세요")
+question = st.text_input("Prompt", placeholder="예: 대서양은 몇 번째로 큰 바다인가?")
+submit = st.button("🚀 질문하기")
 
-with st.form("form"):
-    question = st.text_input("Prompt")
-    submit = st.form_submit_button("Submit")
-
+# -----------------------------
+# 처리 로직
+# -----------------------------
 if submit and question:
-  with st.spinner("Waiting for Kevin AI..."):
-      print("질문 : " + question)
-      question = question.replace("\n", " ")
-    
-      question = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-              {"role": "user", "content": "If a question comes in Korean, Translate the following Korean text to Enaglish:"
-               + question},
-          ]
-      )
-      question = question.choices[0].message.content
-      print("번역 : " + question)
-      question_embedding = client.embeddings.create(input = [question], model="text-embedding-ada-002").data[0].embedding
-    
-      response = es.search(
-        index = "wikipedia_vector_index",
-        knn={
-            "field": "content_vector",
-            "query_vector":  question_embedding,
-            "k": 10,
-            "num_candidates": 100
-          }
-      )
+    with st.spinner("🤖 Kevin AI가 답변을 생성 중입니다..."):
+        try:
+            # Step 1. 한국어 → 영어 번역
+            translation = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": f"Translate the following Korean question into English: {question}"}]
+            ).choices[0].message.content.strip()
 
-      top_hit_summary = response['hits']['hits'][0]['_source']['text'] # Store content of top hit for final step
+            # Step 2. 질문 임베딩 생성
+            embedding = client.embeddings.create(
+                input=[translation],
+                model="text-embedding-ada-002"
+            ).data[0].embedding
 
-      summary = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        #model="gpt-4-1106-preview",
-        messages=[
-              #{"role": "system", "content": "You are a helpful assistant. If it is difficult to give an exact answer to the question with the following text, please answer in Korean: '제가 기지고 있는 정보로는 답변이 어렵습니다.'"},
-              {"role": "system", "content": "You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know."},
+            # Step 3. Elasticsearch 검색
+            response = es.search(
+                index="wikipedia_vector_index",
+                knn={
+                    "field": "content_vector",
+                    "query_vector": embedding,
+                    "k": 5,
+                    "num_candidates": 50
+                }
+            )
 
-              #{"role": "system", "content": "You are a helpful assistant."},
-              #{"role": "user", "content": "Translate the following question into english and answer in Korean:"
-              #{"role": "user", "content": "Answer the following question in korean:"
-              # + question
-              # + "by using the following text:"
-              # + top_hit_summary},
-              {"role": "user", "content": "Use three sentences maximum and keep the answer concise and Answer in korean: Question: "
-               + question +
-               " Context: " + top_hit_summary },
-          ]
-      )
+            # Step 4. 상위 문서 요약 및 답변
+            top_hit = response['hits']['hits'][0]['_source']
+            summary = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are an assistant that answers in Korean based on the given context."},
+                    {"role": "user", "content": f"질문: {question}\n\n참고 문서: {top_hit['text']}"}
+                ]
+            )
 
-    
-      choices = summary.choices
-      st.divider()
-    
-      for choice in choices:
-        print(choice.message.content)
-        st.markdown(choice.message.content)
+            # -----------------------------
+            # 결과 출력
+            # -----------------------------
+            st.divider()
+            st.markdown("### 🧠 AI의 답변")
+            st.markdown(f"<div class='result-card'>{summary.choices[0].message.content}</div>", unsafe_allow_html=True)
 
-      st.divider()
-      st.subheader("검색해본 위키 문서 List")
-    
-      for hit in response['hits']['hits']:
-        id = hit['_id']
-        score = hit['_score']
-        title = hit['_source']['title']
-        url = hit['_source']['url']
-        pretty_output = (f"\nID: {id}\nTitle: {title}\nUrl: {url}\nScore: {score}")
-        st.markdown(pretty_output)
+            st.markdown("### 🔎 검색된 문서 목록")
+            for hit in response['hits']['hits']:
+                title = hit['_source']['title']
+                url = hit['_source']['url']
+                score = round(hit['_score'], 2)
+                st.markdown(f"<div class='wiki-card'>🔗 [{title}]({url})<br/>점수: {score}</div>", unsafe_allow_html=True)
+
+        except Exception as e:
+            st.error(f"⚠️ 오류 발생: {e}")
+
+# -----------------------------
+# Footer
+# -----------------------------
+st.markdown("<div class='footer'>© 2025 Kevin AI | Powered by OpenAI & Elasticsearch</div>", unsafe_allow_html=True)
